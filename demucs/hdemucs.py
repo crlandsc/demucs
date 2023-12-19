@@ -24,36 +24,36 @@ def pad1d(x: torch.Tensor, paddings: tp.Tuple[int, int], mode: str = 'constant',
     """Tiny wrapper around F.pad, just to allow for reflect padding on small input.
     If this is the case, we insert extra 0 padding to the right before the reflection happen."""
     x0 = x
-    print("")
-    print("-------------------------------------------------------")
-    print(f"x0 shape: {x0.shape}")
+    # print("")
+    # print("-------------------------------------------------------")
+    # print(f"x0 shape: {x0.shape}")
     length = x.shape[-1]
-    print(f"x0 Length: {length}")
+    # print(f"x0 Length: {length}")
     padding_left, padding_right = paddings
-    print(f"Padding left: {padding_left}")
-    print(f"Padding right: {padding_right}")
+    # print(f"Padding left: {padding_left}")
+    # print(f"Padding right: {padding_right}")
     if mode == 'reflect':
         max_pad = max(padding_left, padding_right)
-        print(f"Max pad: {max_pad}")
+        # print(f"Max pad: {max_pad}")
         if length <= max_pad:
             extra_pad = max_pad - length + 1
             extra_pad_right = min(padding_right, extra_pad)
             extra_pad_left = extra_pad - extra_pad_right
             paddings = (padding_left - extra_pad_left, padding_right - extra_pad_right)
-            print(f"extra_pad: {extra_pad}")
-            print(f"extra_pad_left: {extra_pad_left}")
-            print(f"extra_pad_right: {extra_pad_right}")
-            print(f"paddings: {paddings}")
+            # print(f"extra_pad: {extra_pad}")
+            # print(f"extra_pad_left: {extra_pad_left}")
+            # print(f"extra_pad_right: {extra_pad_right}")
+            # print(f"paddings: {paddings}")
             x = F.pad(x, (extra_pad_left, extra_pad_right))
-            print(f"x shape: {x.shape}")
+            # print(f"x shape: {x.shape}")
     out = F.pad(x, paddings, mode, value)
-    print(f"Shape test ({(out[..., padding_left: padding_left + length] == x0).all()}): {out[..., padding_left: padding_left + length].shape} == {x0.shape}")
-    print(f"x0 dtype: {x0.dtype}")
-    print(f"out dtype: {out.dtype}")
-    print(f"Where different: {torch.nonzero(out[..., padding_left: padding_left + length] != x0, as_tuple=True)}")
-    print(f"out: \n{out[..., padding_left: padding_left + length]}")
-    print(f"x0: \n{x0}")
-    print("-------------------------------------------------------")
+    # print(f"Shape test ({(out[..., padding_left: padding_left + length] == x0).all()}): {out[..., padding_left: padding_left + length].shape} == {x0.shape}")
+    # print(f"x0 dtype: {x0.dtype}")
+    # print(f"out dtype: {out.dtype}")
+    # print(f"Where different: {torch.nonzero(out[..., padding_left: padding_left + length] != x0, as_tuple=True)}")
+    # print(f"out: \n{out[..., padding_left: padding_left + length]}")
+    # print(f"x0: \n{x0}")
+    # print("-------------------------------------------------------")
     assert out.shape[-1] == length + padding_left + padding_right
     assert (out[..., padding_left: padding_left + length] == x0).all()
     return out
