@@ -432,7 +432,7 @@ class HTDemucs(nn.Module):
         assert hl == nfft // 4
         le = int(math.ceil(x.shape[-1] / hl))
         pad = hl // 2 * 3
-        print("x.shape", x.shape, "\npad", pad, "\nle", le, "\nhl", hl)
+        # print("x.shape", x.shape, "\npad", pad, "\nle", le, "\nhl", hl)
         x = pad1d(x, (pad, pad + le * hl - x.shape[-1]), mode="reflect")
 
         z = spectro(x, nfft, hl)[..., :-1, :]
