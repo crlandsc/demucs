@@ -35,6 +35,11 @@ def pad1d(x: torch.Tensor, paddings: tp.Tuple[int, int], mode: str = 'constant',
             paddings = (padding_left - extra_pad_left, padding_right - extra_pad_right)
             x = F.pad(x, (extra_pad_left, extra_pad_right))
     out = F.pad(x, paddings, mode, value)
+    print("")
+    print(f"Shape test ({(out[..., padding_left: padding_left + length] == x0).all()}): {out[..., padding_left: padding_left + length].shape} == {x0.shape}")
+    print(f"x0 dtype: {x0.dtype}")
+    print(f"out dtype: {out.dtype}")
+    print(f"Where different: {torch.nonzero(out[..., padding_left: padding_left + length] != x0, as_tuple=True)}")
     assert out.shape[-1] == length + padding_left + padding_right
     assert (out[..., padding_left: padding_left + length] == x0).all()
     return out
